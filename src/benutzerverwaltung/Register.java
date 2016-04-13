@@ -3,8 +3,6 @@ package benutzerverwaltung;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JTextField;
-
 public class Register {
 	
 	private boolean istRichtig; //Variable welche in allen Validierungsfunktionen gebraucht wird.
@@ -18,36 +16,30 @@ public class Register {
 	private boolean istUsernameRichtig; //Wird gebraucht für Validierung von Username 
 	private boolean istPasswordRichtig; //Wird gebraucht für Validierung von Password
 	
-	///Regexe///////////////////////////////////////////////////////////////////////
-	
-	//Regexausdrücke für Email, Username und Password
-	
-	//Pattern erstellen für alle drei Angaben
-	
-	//Matcher für alle drei angaben erstellen
-	
-	///Regexe Ende///////////////////////////////////////////////////////////////////
-	
 	private String Userdata; //Speichert alle Userdaten um Datenbank zu überprüfen
 	
 	private RegisterGUI getData = new RegisterGUI();
 	
 	public Register() {
+		System.out.println("Constructor Register start");
 		getUsername();
 		getEmail();
 		getPassword();
+		System.out.println(Username);
+		System.out.println(Email);
+		System.out.println(Password);
 		generateUserdata();
+		System.out.println("Constructor Register end");
 	}
 	
 	public void addLernender() {
 		//Wenn bei RegisterGUI "als Lehrer registrieren" nicht aktiviert ist wird diese Funktion aufgerufen 
 		//Diese Funktion legt einen Lernenden an
 		System.out.println("Erstellt Lernender");
-		System.out.println(Userdata);
-		if (validateLernender() == true) {
+		if (validateLernender()) {
 			askDatabase(Userdata);
 		} else {
-			getData.getFehlermeldung("Die Daten erfüllen die Vorgaben nicht");
+			System.out.println("Die Daten erfüllen die Vorgaben nicht");
 		}
 	}
 	
@@ -55,11 +47,10 @@ public class Register {
 		//Wennn bei RegisterGUI "als Lehrer registrieren" aktiviert ist wird diese Funktion aufgerufen
 		//Diese Funktion legt einen Lehrer an
 		System.out.println("Erstellt Lehrer");
-		System.out.println(Userdata);
-		if (validateLehrer() == true) {
+		if (validateLehrer()) {
 			askDatabase(Userdata);
 		} else {
-			getData.getFehlermeldung("Die Daten erfüllen die Vorgaben nicht");
+			System.out.println("Die Daten erfüllen die Vorgaben nicht");
 		}
 	}
 	
@@ -68,7 +59,8 @@ public class Register {
 		validateEmail();
 		validateUsername();
 		validatePassword();
-		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig) {
+		askDatabase(Userdata);
+		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden) {
 			istRichtig = true;
 		} else {
 			istRichtig = false;
@@ -81,7 +73,8 @@ public class Register {
 		validateEmail();
 		validateUsername();
 		validatePassword();
-		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig) {
+		askDatabase(Userdata);
+		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden) {
 			istRichtig = true;
 		} else {
 			istRichtig = false;
@@ -96,11 +89,12 @@ public class Register {
 		Pattern pEmail = Pattern.compile(R_EMAIL); 
 		Matcher mEmail = pEmail.matcher(Email);
 		if(mEmail.matches()) {
-			istEmailRichtig = true;
+			System.out.println("Email: True");
+			return istEmailRichtig = true;
 		} else {
-			istEmailRichtig = false;
+			System.out.println("Email: false");
+			return istEmailRichtig = false;
 		}
-		return istEmailRichtig;
 	}
 	
 	private boolean validateUsername() {
@@ -110,8 +104,10 @@ public class Register {
 		Pattern pUsername = Pattern.compile(R_USERNAME);
 		Matcher mUsername = pUsername.matcher(Username);
 		if (mUsername.matches()) {
+			System.out.println("Username: True");
 			return istUsernameRichtig = true;
 		} else {
+			System.out.println("Username: false");
 			return istUsernameRichtig = false;
 		}
 	}
@@ -123,8 +119,10 @@ public class Register {
 		Pattern pPassword = Pattern.compile(R_PASSWORD);
 		Matcher mPassword = pPassword.matcher(Password);
 		if (mPassword.matches()) {
+			System.out.println("Password: True");
 			return istPasswordRichtig = true;
 		} else {
+			System.out.println("Password: false");
 			return istPasswordRichtig = false;
 		}
 	}
@@ -132,22 +130,19 @@ public class Register {
 	private void getUsername() {
 		//TODO
 		//Eingabe "Username" aus RegisterGUI holen
-		JTextField myText = getData.getUsernameField();
-		Username = myText.getText();
+		Username = getData.getUsernameField();
 	}
 	
 	private void getPassword() {
 		//TODO
 		//Eingabe "Password" aus RegisterGUI holen
-		JTextField myText = getData.getPasswordField();
-		Password = myText.getText();
+		Password = getData.getPasswordField(); 
 	}
 	
 	private void getEmail() {
 		//TODO
 		//Eingabe "Email" aus RegisterGUI holen
-		JTextField myText = getData.getEmailField();
-		Email = myText.getText();
+		Email = getData.getEmailField();
 	}
 	
 	public void generateUserdata() {
@@ -161,7 +156,7 @@ public class Register {
 		if (istVorhanden == false) {
 			setData(registerData);
 		} else {
-			getData.getFehlermeldung("Dieser Benutzer ist leider schon vorhanden.");
+			System.out.println("Fehler beim Registrieren");
 		}
 	}
 	
