@@ -1,5 +1,7 @@
 package benutzerverwaltung;
 
+//Isch ds iz pusht?
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -29,26 +31,28 @@ public class Register implements ActionListener{
 	
 	private String Userdata; //Speichert alle Userdaten um Datenbank zu überprüfen
 	
-	//Alle swas es fürs GUI braucht
-	JFrame RegisterFrame = new JFrame();
+	//Alles was es fürs GUI braucht --> Das Gui wird von Nina überarbeitet aber ich brauceh eines für testzwecke
+	JFrame RegisterFrame = new JFrame(); //das Frame
 	
-	JPanel pnPanel0;
+	JPanel pnPanel0; //Panel 1 --> eigentlich unnötig aber wäre viel arbeit es zu entfernen und weil nur testzweck egal
 
-	JPanel All;
-	JButton Register;
-	JCheckBox Lehrer;
-	JTextField TUsername;
-	JTextField TEmail;
-	JTextField TPassword;
+	JPanel All; //Panel 2 --> Hier kleben sämtliche komponenten drauf
+	JButton Register; //Button welche alle daten submittet
+	JCheckBox Lehrer; //CheckBox ob man Lehrer sein will oder nicht 
+	JTextField TUsername; //Textfeld für Username
+	JTextField TEmail; //Textfeld für Email
+	JTextField TPassword; //Textfeld für Password
 	
-	JLabel Fehler;
+	JLabel Fehler; //Wird später dazu verwendet, fehler auf GUI auszugeben
 	
+	//Konstruktor für diese Klasse -> generiert nur das GUI und somit auch den ActionListener, welcher das Programm startet
 	public Register() {
 		System.out.println("Constructor Register start");
 		generateGUI();
 		System.out.println("Constructor Register end");
 	}
 	
+	//Wird aufgerufen, wenn der Lehrer im GUI nicht angekreuzt ist
 	public void addLernender() {
 		//Wenn bei RegisterGUI "als Lehrer registrieren" nicht aktiviert ist wird diese Funktion aufgerufen 
 		//Diese Funktion legt einen Lernenden an
@@ -60,6 +64,7 @@ public class Register implements ActionListener{
 		}
 	}
 	
+	//Wird aufgerufen, wenn Lehrer im GUI angekreuzt ist
 	public void addLehrer() {
 		//Wennn bei RegisterGUI "als Lehrer registrieren" aktiviert ist wird diese Funktion aufgerufen
 		//Diese Funktion legt einen Lehrer an
@@ -71,6 +76,7 @@ public class Register implements ActionListener{
 		}
 	}
 	
+	//Validiert alle eingaben des Benutzers plus, ob der Benutz er bereits existiert oder nicht (DB) (Wenn "addLernender")
 	public boolean validateLernender() {
 		istRichtig = false;
 		getUsername();
@@ -80,6 +86,7 @@ public class Register implements ActionListener{
 		System.out.println(Email);
 		System.out.println(Password);
 		generateUserdata();
+		System.out.println(Userdata);
 		validateEmail();
 		validateUsername();
 		validatePassword();
@@ -92,6 +99,7 @@ public class Register implements ActionListener{
 		return istRichtig;
 	}
 	
+	//Validiert alle eingaben des Benutzers plus, ob der Benutz er bereits existiert oder nicht (DB) (Wenn "addLehrer")
 	public boolean validateLehrer() {
 		istRichtig = false;
 		getUsername();
@@ -101,6 +109,7 @@ public class Register implements ActionListener{
 		System.out.println(Email);
 		System.out.println(Password);
 		generateUserdata();
+		System.out.println(Userdata);
 		validateEmail();
 		validateUsername();
 		validatePassword();
@@ -113,6 +122,7 @@ public class Register implements ActionListener{
 		return istRichtig;
 	}
 	
+	//validiert E-Mail mit Regex
 	private boolean validateEmail() {
 		//TODO
 		//Validierung Email
@@ -128,6 +138,7 @@ public class Register implements ActionListener{
 		}
 	}
 	
+	//Validiert Username mit Regex
 	private boolean validateUsername() {
 		//TODO
 		//Validierung Username
@@ -143,6 +154,7 @@ public class Register implements ActionListener{
 		}
 	}
 	
+	//validiert Password mit Regex 
 	private boolean validatePassword() {
 		//TODO
 		//Validierung Password
@@ -158,28 +170,33 @@ public class Register implements ActionListener{
 		}
 	}
 	
+	//getter für den USername aus GUI
 	private void getUsername() {
 		//TODO
 		//Eingabe "Username" aus RegisterGUI holen
 		Username = TUsername.getText();
 	}
 	
+	//getter für Password aus GUI 
 	private void getPassword() {
 		//TODO
 		//Eingabe "Password" aus RegisterGUI holen
 		Password = TPassword.getText();
 	}
 	
+	//getter für E-Mail aus Gui
 	private void getEmail() {
 		//TODO
 		//Eingabe "Email" aus RegisterGUI holen
 		Email = TEmail.getText();
 	}
 	
+	//generiert einen String um mit unseren Datenbank KLassen kommunizieren zu können (richtiges Format)
 	public void generateUserdata() {
 		Userdata = Username + SEPARATOR + Email + SEPARATOR + Password;
 	}
 	
+	//Schnittstelle Datenbank zum schreiben und lesen (Neue Daten hinzufügen udn auf Redundanzen überprüfen) 
 	public void askDatabase(String registerData) {
 		istVorhanden = false;
 		//TODO 
@@ -191,11 +208,18 @@ public class Register implements ActionListener{
 		}
 	}
 	
+	//Wird in Methode "askDatabase" gebraucht um Daten in DB zu speichern
 	private void setData(String registerData) {
 		//TODO 
-		//Abspeicherung in Datenbank programmieren -> mit Roger absprechen
+		//Abspeicherung in Datenbank programmieren 
 	}
 	
+	//Löscht einen User --> Zum Löschenmuss User alle drei Angaben korrekt eingeben (Username, E-Mail und Passwort)
+	private void delUser() {
+		
+	}
+	
+	//Wird im Konstruktor aufgerufen und generiert das GUI 
 	private void generateGUI() {
 		RegisterFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		RegisterFrame.setTitle("Registrieren");
@@ -288,6 +312,7 @@ public class Register implements ActionListener{
 		RegisterFrame.setVisible(true);
 	}
 	
+	//ActionListener von Knopf "Register" (Registrieren)
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// Listener für den Registrierungsbutton
