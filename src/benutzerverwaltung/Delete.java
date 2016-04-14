@@ -6,25 +6,42 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import bdatabase.*;
 
 /**
  * @author Administrator
  * @created April 13, 2016
  */
-public class Delete 
+public class Delete implements ActionListener
 {
 	/**
 	 * @author Joel Häberli
 	 * @version 1.0
 	 */
-	private static final long serialVersionUID = 1L;
 
+	// Variablendeklarationen
+	private String Username;
+	private String Email;
+	private String Password;
+
+	private String delData;
+	private String SEPARATOR = ":::";
+
+	private boolean existiert;
+
+	// Datenbank
+	BDatabase BenutzerDB;
+
+	// GUIdeklarationen
 	JFrame deleteFrame;
-	
+
 	JPanel deletePanel;
 	JButton DeleteUser;
 	JTextField DeleteUsername;
@@ -32,10 +49,12 @@ public class Delete
 	JTextField DeletePassword;
 	JCheckBox DeleteLehrer;
 	JLabel DeleteLabel;
-	
-	public Delete(){
+
+	public Delete()
+	{
 		System.out.println("Constructor Delete Start");
 		loadDelete();
+		BenutzerDB = new BDatabase();
 		System.out.println("Constructor Delete End");
 	}
 
@@ -44,7 +63,7 @@ public class Delete
 		deleteFrame = new JFrame();
 
 		deleteFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		deletePanel = new JPanel();
 		GridBagLayout gbPanel0 = new GridBagLayout();
 		GridBagConstraints gbcPanel0 = new GridBagConstraints();
@@ -61,6 +80,8 @@ public class Delete
 		gbcPanel0.anchor = GridBagConstraints.NORTH;
 		gbPanel0.setConstraints(DeleteUser, gbcPanel0);
 		deletePanel.add(DeleteUser);
+
+		DeleteUser.addActionListener(this);
 
 		DeleteUsername = new JTextField();
 		gbcPanel0.gridx = 4;
@@ -111,7 +132,7 @@ public class Delete
 		gbPanel0.setConstraints(DeleteLehrer, gbcPanel0);
 		deletePanel.add(DeleteLehrer);
 
-		DeleteLabel = new JLabel("Bitte geben Sie Username, E-Mail und PAsswort ein");
+		DeleteLabel = new JLabel("Bitte geben Sie Username, E-Mail und Passwort ein");
 		gbcPanel0.gridx = 4;
 		gbcPanel0.gridy = 1;
 		gbcPanel0.gridwidth = 12;
@@ -126,5 +147,48 @@ public class Delete
 		deleteFrame.setContentPane(deletePanel);
 		deleteFrame.pack();
 		deleteFrame.setVisible(true);
+	}
+
+	private void getdelData()
+	{
+		delData = Username + SEPARATOR + Email + SEPARATOR + Password;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0)
+	{
+		if (arg0.getSource() == DeleteUser)
+		{
+			Username = DeleteUsername.getText();
+			Email = DeleteEmail.getText();
+			Password = DeletePassword.getText();
+			getdelData();
+			existiert = BenutzerDB.checkPossible(delData);
+			if (existiert)
+			{
+				JFrame sicher = new JFrame();
+				JLabel frage = new JLabel("Möchten Sie ihr Profil wirklich löschen?");
+				JButton bestatigung = new JButton();
+				bestatigung.setText("Ja, Löschen!");
+				bestatigung.addActionListener(this);
+				JButton nein = new JButton();
+				nein.setText("Nein, auf keinen Fall!");
+				nein.addActionListener(this);
+				sicher.add(frage);
+				sicher.add(nein);
+				sicher.add(bestatigung);
+				sicher.setVisible(true);
+				if (arg0.getSource() == bestatigung)
+				{
+					BenutzerDB.delUser(delData, DeleteLehrer.isSelected());
+				}
+				if (arg0.getSource() == nein) {
+					sicher.setVisible(false);
+				}
+			} else
+			{
+				System.out.println("Es scheint, dass dieser User bereits gelöscht wurde oder nie existiert hat");
+			}
+		}
 	}
 }

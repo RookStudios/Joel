@@ -17,73 +17,88 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import bdatabase.*;
 
-public class Register implements ActionListener{
-	
-	private boolean istRichtig; //Variable welche in allen Validierungsfunktionen gebraucht wird.
-	private boolean istVorhanden; //Variable von Funktion "askDatabase()"
-	private static final String SEPARATOR = ":::"; //Allgemein definierter Separator
-	private String Username; //Sessionspeiche für den Username
-	private String Email; //Sessionspeicher für Email
-	private String Password; //Sessionspeicher für Password
-	
-	private boolean istEmailRichtig; //Wird gebraucht für Validierung von Email
-	private boolean istUsernameRichtig; //Wird gebraucht für Validierung von Username 
-	private boolean istPasswordRichtig; //Wird gebraucht für Validierung von Password
-	
-	private String Userdata; //Speichert alle Userdaten um Datenbank zu überprüfen
-	
-	//Datenbank für Benutzerverwaltung deklarieren
-	BDatabase BenutzerDB;
-	
-	//Alles was es fürs GUI braucht --> Das Gui wird von Nina überarbeitet aber ich brauceh eines für testzwecke
-	JFrame RegisterFrame = new JFrame(); //das Frame
-	
-	JPanel pnPanel0; //Panel 1 --> eigentlich unnötig aber wäre viel arbeit es zu entfernen und weil nur testzweck egal
+public class Register implements ActionListener
+{
 
-	JPanel All; //Panel 2 --> Hier kleben sämtliche komponenten drauf
-	JButton Register; //Button welche alle daten submittet
-	JCheckBox Lehrer; //CheckBox ob man Lehrer sein will oder nicht 
-	JTextField TUsername; //Textfeld für Username
-	JTextField TEmail; //Textfeld für Email
-	JTextField TPassword; //Textfeld für Password
-	
-	JLabel Fehler; //Wird später dazu verwendet, fehler auf GUI auszugeben
-	
-	//Konstruktor für diese Klasse -> generiert nur das GUI und somit auch den ActionListener, welcher das Programm startet
-	public Register() {
+	private boolean istRichtig; // Variable welche in allen Validierungsfunktionen gebraucht wird.
+	private boolean istVorhanden; // Variable von Funktion "askDatabase()"
+	private static final String SEPARATOR = ":::"; // Allgemein definierter Separator
+	private String Username; // Sessionspeiche für den Username
+	private String Email; // Sessionspeicher für Email
+	private String Password; // Sessionspeicher für Password
+
+	private boolean istEmailRichtig; // Wird gebraucht für Validierung von Email
+	private boolean istUsernameRichtig; // Wird gebraucht für Validierung von Username
+	private boolean istPasswordRichtig; // Wird gebraucht für Validierung Password
+
+	private String Userdata; // Speichert alle Userdaten um Datenbank zu überprüfen
+
+	// Datenbank für Benutzerverwaltung deklarieren
+	BDatabase BenutzerDB;
+
+	// Alles was es fürs GUI braucht --> Das Gui wird von Nina überarbeitet aber
+	// ich brauceh eines für testzwecke
+	JFrame RegisterFrame = new JFrame(); // das Frame
+
+	JPanel pnPanel0; // Panel 1 --> eigentlich unnötig aber wäre viel arbeit es
+						// zu entfernen und weil nur testzweck egal
+
+	JPanel All; // Panel 2 --> Hier kleben sämtliche komponenten drauf
+	JButton Register; // Button welche alle daten submittet
+	JCheckBox Lehrer; // CheckBox ob man Lehrer sein will oder nicht
+	JTextField TUsername; // Textfeld für Username
+	JTextField TEmail; // Textfeld für Email
+	JTextField TPassword; // Textfeld für Password
+
+	JLabel Fehler; // Wird später dazu verwendet, fehler auf GUI auszugeben
+
+	// Konstruktor für diese Klasse -> generiert nur das GUI und somit auch den
+	// ActionListener, welcher das Programm startet
+	public Register()
+	{
 		System.out.println("Constructor Register start");
 		generateGUI();
-		//Instanzierung Datenbank
+		// Instanzierung Datenbank
 		BenutzerDB = new BDatabase();
 		System.out.println("Constructor Register end");
 	}
-	
-	//Wird aufgerufen, wenn der Lehrer im GUI nicht angekreuzt ist
-	public void addLernender() {
-		//Wenn bei RegisterGUI "als Lehrer registrieren" nicht aktiviert ist wird diese Funktion aufgerufen 
-		//Diese Funktion legt einen Lernenden an
+
+	// Wird aufgerufen, wenn der Lehrer im GUI nicht angekreuzt ist
+	public void addLernender()
+	{
+		// Wenn bei RegisterGUI "als Lehrer registrieren" nicht aktiviert ist
+		// wird diese Funktion aufgerufen
+		// Diese Funktion legt einen Lernenden an
 		System.out.println("Erstellt Lernender");
-		if (validateLernender()) {
-			askDatabase(Userdata);
-		} else {
+		if (validateLernender())
+		{
+			askDatabase();
+		} else
+		{
 			System.out.println("Die Daten erfüllen die Vorgaben nicht");
 		}
 	}
-	
-	//Wird aufgerufen, wenn Lehrer im GUI angekreuzt ist
-	public void addLehrer() {
-		//Wennn bei RegisterGUI "als Lehrer registrieren" aktiviert ist wird diese Funktion aufgerufen
-		//Diese Funktion legt einen Lehrer an
+
+	// Wird aufgerufen, wenn Lehrer im GUI angekreuzt ist
+	public void addLehrer()
+	{
+		// Wennn bei RegisterGUI "als Lehrer registrieren" aktiviert ist wird
+		// diese Funktion aufgerufen
+		// Diese Funktion legt einen Lehrer an
 		System.out.println("Erstellt Lehrer");
-		if (validateLehrer()) {
-			askDatabase(Userdata);
-		} else {
+		if (validateLehrer())
+		{
+			askDatabase();
+		} else
+		{
 			System.out.println("Die Daten erfüllen die Vorgaben nicht");
 		}
 	}
-	
-	//Validiert alle eingaben des Benutzers plus, ob der Benutz er bereits existiert oder nicht (DB) (Wenn "addLernender")
-	public boolean validateLernender() {
+
+	// Validiert alle eingaben des Benutzers plus, ob der Benutz er bereits
+	// existiert oder nicht (DB) (Wenn "addLernender")
+	public boolean validateLernender()
+	{
 		istRichtig = false;
 		getUsername();
 		getEmail();
@@ -96,17 +111,21 @@ public class Register implements ActionListener{
 		validateEmail();
 		validateUsername();
 		validatePassword();
-		askDatabase(Userdata);
-		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden) {
+		askDatabase();
+		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden)
+		{
 			istRichtig = true;
-		} else {
+		} else
+		{
 			istRichtig = false;
 		}
 		return istRichtig;
 	}
-	
-	//Validiert alle eingaben des Benutzers plus, ob der Benutz er bereits existiert oder nicht (DB) (Wenn "addLehrer")
-	public boolean validateLehrer() {
+
+	// Validiert alle eingaben des Benutzers plus, ob der Benutz er bereits
+	// existiert oder nicht (DB) (Wenn "addLehrer")
+	public boolean validateLehrer()
+	{
 		istRichtig = false;
 		getUsername();
 		getEmail();
@@ -119,102 +138,125 @@ public class Register implements ActionListener{
 		validateEmail();
 		validateUsername();
 		validatePassword();
-		askDatabase(Userdata);
-		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden) {
+		askDatabase();
+		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden)
+		{
 			istRichtig = true;
-		} else {
+		} else
+		{
 			istRichtig = false;
 		}
 		return istRichtig;
 	}
-	
-	//validiert E-Mail mit Regex
-	private boolean validateEmail() {
-		//Validierung Email
-		final String R_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-		Pattern pEmail = Pattern.compile(R_EMAIL); 
+
+	// validiert E-Mail mit Regex
+	private boolean validateEmail()
+	{
+		// Validierung Email
+		final String R_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		Pattern pEmail = Pattern.compile(R_EMAIL);
 		Matcher mEmail = pEmail.matcher(Email);
-		if(mEmail.matches()) {
+		if (mEmail.matches())
+		{
 			System.out.println("Email: True");
 			return istEmailRichtig = true;
-		} else {
+		} else
+		{
 			System.out.println("Email: false");
 			return istEmailRichtig = false;
 		}
 	}
-	
-	//Validiert Username mit Regex
-	private boolean validateUsername() {
-		//Validierung Username
+
+	// Validiert Username mit Regex
+	private boolean validateUsername()
+	{
+		// Validierung Username
 		final String R_USERNAME = "^[A-Za-z0-9]{4,30}$";
 		Pattern pUsername = Pattern.compile(R_USERNAME);
 		Matcher mUsername = pUsername.matcher(Username);
-		if (mUsername.matches()) {
+		if (mUsername.matches())
+		{
 			System.out.println("Username: True");
 			return istUsernameRichtig = true;
-		} else {
+		} else
+		{
 			System.out.println("Username: false");
 			return istUsernameRichtig = false;
 		}
 	}
-	
-	//validiert Password mit Regex 
-	private boolean validatePassword() {
-		//Validierung Password
+
+	// validiert Password mit Regex
+	private boolean validatePassword()
+	{
+		// Validierung Password
 		final String R_PASSWORD = "^[A-Za-z0-9!?+*,ç%&=]{8,50}$";
 		Pattern pPassword = Pattern.compile(R_PASSWORD);
 		Matcher mPassword = pPassword.matcher(Password);
-		if (mPassword.matches()) {
+		if (mPassword.matches())
+		{
 			System.out.println("Password: True");
 			return istPasswordRichtig = true;
-		} else {
+		} else
+		{
 			System.out.println("Password: false");
 			return istPasswordRichtig = false;
 		}
 	}
-	
-	//getter für den USername aus GUI
-	private void getUsername() {
-		//Eingabe "Username" aus RegisterGUI holen
+
+	// getter für den USername aus GUI
+	private void getUsername()
+	{
+		// Eingabe "Username" aus RegisterGUI holen
 		Username = TUsername.getText();
 	}
-	
-	//getter für Password aus GUI 
-	private void getPassword() {
-		//Eingabe "Password" aus RegisterGUI holen
+
+	// getter für Password aus GUI
+	private void getPassword()
+	{
+		// Eingabe "Password" aus RegisterGUI holen
 		Password = TPassword.getText();
 	}
-	
-	//getter für E-Mail aus Gui
-	private void getEmail() {
-		//Eingabe "Email" aus RegisterGUI holen
+
+	// getter für E-Mail aus Gui
+	private void getEmail()
+	{
+		// Eingabe "Email" aus RegisterGUI holen
 		Email = TEmail.getText();
 	}
-	
-	//generiert einen String um mit unseren Datenbank KLassen kommunizieren zu können (richtiges Format)
-	public void generateUserdata() {
+
+	// generiert einen String um mit unseren Datenbank KLassen kommunizieren zu
+	// können (richtiges Format)
+	public void generateUserdata()
+	{
 		Userdata = Username + SEPARATOR + Email + SEPARATOR + Password;
 	}
-	
-	//Schnittstelle Datenbank zum schreiben und lesen (Neue Daten hinzufügen udn auf Redundanzen überprüfen) 
-	public void askDatabase(String registerData) {
-		istVorhanden = false;
-		//Datenbank überprüfung programmieren
-		
-		if (istVorhanden == false) {
-			setData(registerData);
-		} else {
+
+	// Schnittstelle Datenbank zum schreiben und lesen (Neue Daten hinzufügen
+	// udn auf Redundanzen überprüfen)
+	public void askDatabase()
+	{
+		// Datenbank überprüfung
+		istVorhanden = BenutzerDB.checkPossible(Userdata);
+		if (istVorhanden == false)
+		{
+			setData();
+		} else
+		{
 			System.out.println("Fehler beim Registrieren");
 		}
 	}
-	
-	//Wird in Methode "askDatabase" gebraucht um Daten in DB zu speichern
-	private void setData(String registerData) {
-		//Abspeicherung in Datenbank programmieren 
+
+	// Wird in Methode "askDatabase" gebraucht um Daten in DB zu speichern
+	private void setData()
+	{
+		// Abspeicherung in Datenbank
+		BenutzerDB.insert(Userdata, Lehrer.isSelected());
 	}
-	
-	//Wird im Konstruktor aufgerufen und generiert das GUI 
-	private void generateGUI() {
+
+	// Wird im Konstruktor aufgerufen und generiert das GUI
+	private void generateGUI()
+	{
 		RegisterFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		RegisterFrame.setTitle("Registrieren");
 
@@ -305,16 +347,20 @@ public class Register implements ActionListener{
 		RegisterFrame.pack();
 		RegisterFrame.setVisible(true);
 	}
-	
-	//ActionListener von Knopf "Register" (Registrieren)
+
+	// ActionListener von Knopf "Register" (Registrieren)
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent arg0)
+	{
 		// Listener für den Registrierungsbutton
-		if (arg0.getSource() == Register) {
-			if (Lehrer.isSelected()) {
+		if (arg0.getSource() == Register)
+		{
+			if (Lehrer.isSelected())
+			{
 				addLehrer();
 				System.out.println("Registrieren: Lernender");
-			} else {
+			} else
+			{
 				addLernender();
 				System.out.println("Registrieren: Lehrer");
 			}
