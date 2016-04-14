@@ -73,6 +73,13 @@ public class Register implements ActionListener
 		if (validateLernender())
 		{
 			askDatabase();
+			if (!istVorhanden)
+			{
+				setData();
+			} else
+			{
+				System.out.println("Fehler beim Registrieren");
+			}
 		} else
 		{
 			System.out.println("Die Daten erfüllen die Vorgaben nicht");
@@ -86,9 +93,16 @@ public class Register implements ActionListener
 		// diese Funktion aufgerufen
 		// Diese Funktion legt einen Lehrer an
 		System.out.println("Erstellt Lehrer");
-		if (validateLehrer())
+		if (validateLernender())
 		{
 			askDatabase();
+			if (!istVorhanden)
+			{
+				setData();
+			} else
+			{
+				System.out.println("Fehler beim Registrieren");
+			}
 		} else
 		{
 			System.out.println("Die Daten erfüllen die Vorgaben nicht");
@@ -99,7 +113,6 @@ public class Register implements ActionListener
 	// existiert oder nicht (DB) (Wenn "addLernender")
 	public boolean validateLernender()
 	{
-		istRichtig = false;
 		getUsername();
 		getEmail();
 		getPassword();
@@ -111,8 +124,7 @@ public class Register implements ActionListener
 		validateEmail();
 		validateUsername();
 		validatePassword();
-		askDatabase();
-		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden)
+		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig)
 		{
 			istRichtig = true;
 		} else
@@ -138,8 +150,7 @@ public class Register implements ActionListener
 		validateEmail();
 		validateUsername();
 		validatePassword();
-		askDatabase();
-		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig && istVorhanden)
+		if (istEmailRichtig && istUsernameRichtig && istPasswordRichtig)
 		{
 			istRichtig = true;
 		} else
@@ -238,13 +249,6 @@ public class Register implements ActionListener
 	{
 		// Datenbank überprüfung
 		istVorhanden = BenutzerDB.checkPossible(Userdata);
-		if (istVorhanden == false)
-		{
-			setData();
-		} else
-		{
-			System.out.println("Fehler beim Registrieren");
-		}
 	}
 
 	// Wird in Methode "askDatabase" gebraucht um Daten in DB zu speichern
@@ -357,12 +361,12 @@ public class Register implements ActionListener
 		{
 			if (Lehrer.isSelected())
 			{
+				System.out.println("Registrieren: Lehrer");
 				addLehrer();
-				System.out.println("Registrieren: Lernender");
 			} else
 			{
+				System.out.println("Registrieren: Lernender");
 				addLernender();
-				System.out.println("Registrieren: Lehrer");
 			}
 		}
 	}
