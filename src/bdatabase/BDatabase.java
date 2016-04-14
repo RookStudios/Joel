@@ -1,4 +1,4 @@
-package database;
+package bdatabase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class Database
+public class BDatabase
 {
 
 	// Variabeldeklaration
@@ -14,13 +14,13 @@ public class Database
 	private boolean teachPossible = true;
 	private boolean pwdCorr = true;
 	private boolean studPossible = true;
-	private Table teacher;
-	private Table student;
+	private BTable teacher;
+	private BTable student;
 	private String selTable;
 	private String selUsern;
 	private Connection c = null;
 	private Statement stmt = null;
-	private String separator = ":::";
+	private String SEPARATOR = ":::";
 	private String passwd = "";
 	private String attributes = "";
 	private String insValues = "";
@@ -28,21 +28,21 @@ public class Database
 
 	// Konstruktor, erstellt Tabellen in der Datenbank namens: test.db
 
-	public Database()
+	public BDatabase()
 	{
 
 		// Erstellen der Tabellen, Attribute (Spaltenname, Datentyp, NotNull)
 
-		Attributes usern = new Attributes("Username", "TEXT", true);
-		Attributes email = new Attributes("E-Mail", "TEXT", true);
-		Attributes passwd = new Attributes("Password", "TEXT", true);
+		BAttributes usern = new BAttributes("Username", "TEXT", true);
+		BAttributes email = new BAttributes("E-Mail", "TEXT", true);
+		BAttributes passwd = new BAttributes("Password", "TEXT", true);
 
-		teacher = new Table("Lehrer");
+		teacher = new BTable("Lehrer");
 		teacher.addAttrs(usern);
 		teacher.addAttrs(email);
 		teacher.addAttrs(passwd);
 
-		student = new Table("Lernender");
+		student = new BTable("Lernender");
 		student.addAttrs(usern);
 		student.addAttrs(email);
 		student.addAttrs(passwd);
@@ -70,7 +70,7 @@ public class Database
 				while (rsTeacher.next())
 				{
 
-					String[] splited = values.split(separator);
+					String[] splited = values.split(SEPARATOR);
 
 					for (int i = 0; i < splited.length - 1; i++)
 					{
@@ -107,7 +107,7 @@ public class Database
 				while (rsStudent.next())
 				{
 
-					String[] splited = values.split(separator);
+					String[] splited = values.split(SEPARATOR);
 
 					for (int i = 0; i < splited.length - 1; i++)
 					{
@@ -161,10 +161,10 @@ public class Database
 		if (person)
 		{
 
-			for (int i = 0; i < valuee.split(separator).length; i++)
+			for (int i = 0; i < valuee.split(SEPARATOR).length; i++)
 			{
 
-				values.add(valuee.split(separator)[i]);
+				values.add(valuee.split(SEPARATOR)[i]);
 
 			}
 
@@ -250,10 +250,10 @@ public class Database
 		} else
 		{
 
-			for (int i = 0; i < valuee.split(separator).length; i++)
+			for (int i = 0; i < valuee.split(SEPARATOR).length; i++)
 			{
 
-				values.add(valuee.split(separator)[i]);
+				values.add(valuee.split(SEPARATOR)[i]);
 
 			}
 
@@ -366,7 +366,7 @@ public class Database
 				stmt = c.createStatement();
 
 				String sql1 = "SELECT Password FROM " + selTable + " WHERE UPPER(Username) = UPPER("
-						+ values.split(separator)[1] + ")";
+						+ values.split(SEPARATOR)[1] + ")";
 
 				ResultSet rsPwd = stmt.executeQuery(sql1);
 
@@ -387,7 +387,7 @@ public class Database
 				System.exit(0);
 			}
 
-			if (values.split(separator)[2].equals(passwd))
+			if (values.split(SEPARATOR)[2].equals(passwd))
 			{
 
 				try

@@ -1,8 +1,8 @@
-package database;
+package bdatabase;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Table {
+public class BTable {
 
 	// Variabeldeklaration
 
@@ -11,8 +11,8 @@ public class Table {
 	// Changeable Database Name --> DB_Name
 
 	private String DB_Name = "test.db";
-	public ArrayList<Attributes> Attrs = new ArrayList<Attributes>();
-	public static ArrayList<Table> Tables = new ArrayList<Table>();
+	public ArrayList<BAttributes> Attrs = new ArrayList<BAttributes>();
+	public static ArrayList<BTable> Tables = new ArrayList<BTable>();
 	private Connection c = null;
 	private Statement stmt = null;
 	private String sql = "";
@@ -21,7 +21,7 @@ public class Table {
 
 	// Konstruktor, welche den Namen gibt und die Datenbank erstellt
 
-	public Table(String Table_name) {
+	public BTable(String Table_name) {
 
 		Tbl_Name = Table_name;
 		
@@ -39,7 +39,7 @@ public class Table {
 
 	// Methode, welche Attribute der Liste Attrs hinzufügt
 
-	public void addAttrs(Attributes attr) {
+	public void addAttrs(BAttributes attr) {
 
 		Attrs.add(attr);
 

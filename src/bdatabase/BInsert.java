@@ -1,10 +1,10 @@
-package database;
+package bdatabase;
 import java.sql.*;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-public class Insert {
+public class BInsert {
 
 	public final ArrayList<String> values = new ArrayList<String>();
 	private Connection c = null;
@@ -12,7 +12,7 @@ public class Insert {
 	private String attributes = "";
 	private String insertValues = "";
 
-	public Insert(Table table_name) {
+	public BInsert(BTable table_name) {
 
 		if (table_name != null) {
 
@@ -27,7 +27,7 @@ public class Insert {
 
 	}
 
-	public void pushToDB(Table table_name) {
+	public void pushToDB(BTable table_name) {
 
 		if (table_name != null) {
 
@@ -101,7 +101,7 @@ public class Insert {
 		}
 	}
 
-	public void delValues(Table table_name) {
+	public void delValues(BTable table_name) {
 
 		if (table_name != null) {
 
@@ -126,7 +126,7 @@ public class Insert {
 		}
 	}
 
-	public void pullFromDB(Table table_name) {
+	public void pullFromDB(BTable table_name) {
 
 		if (table_name != null) {
 
@@ -168,21 +168,21 @@ public class Insert {
 										
 										System.out.println("\nFREMDSCHLÜSSELVERWEIS AUF: " + splited[1] + "\n");
 										
-										for (int o = 0; o < Table.Tables.size(); o++) {
+										for (int o = 0; o < BTable.Tables.size(); o++) {
 											
-											if (Table.Tables.get(o).getName().toUpperCase().equals(splited[1].toUpperCase())) {
+											if (BTable.Tables.get(o).getName().toUpperCase().equals(splited[1].toUpperCase())) {
 												
-												for (int i = 0; i < Table.Tables.get(o).Attrs.size(); i++) {
+												for (int i = 0; i < BTable.Tables.get(o).Attrs.size(); i++) {
 													
-													if (Table.Tables.get(o).Attrs.get(i).getDatatype().equals("INTEGER")) {
+													if (BTable.Tables.get(o).Attrs.get(i).getDatatype().equals("INTEGER")) {
 														
-														Integer print = sct.getInt(Table.Tables.get(o).Attrs.get(i).getName());
-														System.out.println(Table.Tables.get(o).Attrs.get(i).getName() + " = " + print.toString());
+														Integer print = sct.getInt(BTable.Tables.get(o).Attrs.get(i).getName());
+														System.out.println(BTable.Tables.get(o).Attrs.get(i).getName() + " = " + print.toString());
 														
 													} else {
 													
-														String print2 = sct.getString(Table.Tables.get(o).Attrs.get(i).getName());
-														System.out.println(Table.Tables.get(o).Attrs.get(i).getName() + " = " + print2);
+														String print2 = sct.getString(BTable.Tables.get(o).Attrs.get(i).getName());
+														System.out.println(BTable.Tables.get(o).Attrs.get(i).getName() + " = " + print2);
 														
 													}
 													

@@ -1,12 +1,12 @@
-package database;
+package bdatabase;
 
-public class Attributes {
+public class BAttributes {
 	
 	private String Name;
 	private String Datatype;
 	private Boolean NotNull;
 	
-	public Attributes (String name, String datatype, boolean notNull) {
+	public BAttributes (String name, String datatype, boolean notNull) {
 		
 		Name = name;
 		Datatype = datatype;

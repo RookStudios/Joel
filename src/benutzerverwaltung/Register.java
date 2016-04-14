@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import bdatabase.*;
 
 public class Register implements ActionListener{
 	
@@ -30,6 +31,9 @@ public class Register implements ActionListener{
 	private boolean istPasswordRichtig; //Wird gebraucht für Validierung von Password
 	
 	private String Userdata; //Speichert alle Userdaten um Datenbank zu überprüfen
+	
+	//Datenbank für Benutzerverwaltung deklarieren
+	BDatabase BenutzerDB;
 	
 	//Alles was es fürs GUI braucht --> Das Gui wird von Nina überarbeitet aber ich brauceh eines für testzwecke
 	JFrame RegisterFrame = new JFrame(); //das Frame
@@ -49,6 +53,8 @@ public class Register implements ActionListener{
 	public Register() {
 		System.out.println("Constructor Register start");
 		generateGUI();
+		//Instanzierung Datenbank
+		BenutzerDB = new BDatabase();
 		System.out.println("Constructor Register end");
 	}
 	
@@ -124,7 +130,6 @@ public class Register implements ActionListener{
 	
 	//validiert E-Mail mit Regex
 	private boolean validateEmail() {
-		//TODO
 		//Validierung Email
 		final String R_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		Pattern pEmail = Pattern.compile(R_EMAIL); 
@@ -140,7 +145,6 @@ public class Register implements ActionListener{
 	
 	//Validiert Username mit Regex
 	private boolean validateUsername() {
-		//TODO
 		//Validierung Username
 		final String R_USERNAME = "^[A-Za-z0-9]{4,30}$";
 		Pattern pUsername = Pattern.compile(R_USERNAME);
@@ -156,7 +160,6 @@ public class Register implements ActionListener{
 	
 	//validiert Password mit Regex 
 	private boolean validatePassword() {
-		//TODO
 		//Validierung Password
 		final String R_PASSWORD = "^[A-Za-z0-9!?+*,ç%&=]{8,50}$";
 		Pattern pPassword = Pattern.compile(R_PASSWORD);
@@ -172,21 +175,18 @@ public class Register implements ActionListener{
 	
 	//getter für den USername aus GUI
 	private void getUsername() {
-		//TODO
 		//Eingabe "Username" aus RegisterGUI holen
 		Username = TUsername.getText();
 	}
 	
 	//getter für Password aus GUI 
 	private void getPassword() {
-		//TODO
 		//Eingabe "Password" aus RegisterGUI holen
 		Password = TPassword.getText();
 	}
 	
 	//getter für E-Mail aus Gui
 	private void getEmail() {
-		//TODO
 		//Eingabe "Email" aus RegisterGUI holen
 		Email = TEmail.getText();
 	}
@@ -199,8 +199,8 @@ public class Register implements ActionListener{
 	//Schnittstelle Datenbank zum schreiben und lesen (Neue Daten hinzufügen udn auf Redundanzen überprüfen) 
 	public void askDatabase(String registerData) {
 		istVorhanden = false;
-		//TODO 
 		//Datenbank überprüfung programmieren
+		
 		if (istVorhanden == false) {
 			setData(registerData);
 		} else {
@@ -210,13 +210,7 @@ public class Register implements ActionListener{
 	
 	//Wird in Methode "askDatabase" gebraucht um Daten in DB zu speichern
 	private void setData(String registerData) {
-		//TODO 
 		//Abspeicherung in Datenbank programmieren 
-	}
-	
-	//Löscht einen User --> Zum Löschenmuss User alle drei Angaben korrekt eingeben (Username, E-Mail und Passwort)
-	private void delUser() {
-		
 	}
 	
 	//Wird im Konstruktor aufgerufen und generiert das GUI 
